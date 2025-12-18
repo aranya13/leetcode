@@ -1,59 +1,49 @@
 class Solution {
     public List<List<String>> solveNQueens(int n) {
         List<List<String>> res = new ArrayList<>();
-        boolean[][] board = new boolean[n][n];
-        queen(res , n , 0 , board);
+        char[][] board = new char[n][n];
+        for(int i = 0 ; i < n ; i++){
+            Arrays.fill(board[i] , '.');
+        }
+        queen(res , n , board  , 0);
         return res;
+
     }
-    public void queen(List<List<String>> res , int n , int r , boolean[][] board){
-        if(r == board.length){
-            res.add(construct(board));
+    public void queen(List<List<String>> res , int n , char[][] board , int r){
+        if(n == r){
+            List<String> cur = new ArrayList<>();
+            for(int i = 0 ; i < n ; i++){
+                cur.add(new String(board[i]));
+            }
+            res.add(cur);
             return;
         }
-        
-        for(int c = 0 ; c < board.length ; c++){
-            if(isSafe(board , r, c)){
-                board[r][c] = true;
-                queen(res , n, r + 1 , board);
-                board[r][c] = false;
+        for(int c = 0 ; c < n ; c++){
+            if(isSafe(board , n , r , c)){
+                board[r][c] = 'Q';
+                queen(res , n , board ,r + 1  );
+                board[r][c] = '.';
             }
         }
     }
-    private static boolean isSafe(boolean[][] board , int r , int c){
-        for(int i = 0 ; i < r ;i++){
-            if(board[i][c] == true){
+    public boolean isSafe(char[][] board , int n , int r , int c){
+        for(int i = 0 ; i < n ; i++){
+            if(board[i][c] == 'Q'){
                 return false;
             }
         }
-        int maxL = Math.min(r , c);
+        int maxL = Math.min(r,c);
+        int maxR = Math.min(r, n - c - 1);
         for(int i = 1 ; i <= maxL ; i++){
-            if(board[r - i][c - i] == true){
+            if(board[r - i][c - i] == 'Q'){
                 return false;
             }
         }
-        int maxR = Math.min(r , board.length - c - 1);
         for(int i = 1 ; i <= maxR ; i++){
-            if(board[r - i][c + i] == true){
+            if(board[r - i][c + i] == 'Q'){
                 return false;
             }
         }
         return true;
     }
-    private List<String> construct(boolean[][] board){
-        List<String> res = new ArrayList<>();
-        for(int i = 0 ; i < board.length ; i++){
-            StringBuilder row = new StringBuilder();
-            for(int j = 0 ; j < board.length ; j++){
-                if(board[i][j]){
-                    row.append("Q");
-                }
-                else{
-                    row.append(".");
-                }
-            }
-            res.add(row.toString());
-        }
-        return res;
-    }
-
 }
