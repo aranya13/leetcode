@@ -1,8 +1,14 @@
 class Solution {
     public int lastRemaining(int n) {
-        if (n == 1){
-            return 1;
+        return solve(n , true , 1 ,1);
+    }
+    private int solve(int r , boolean ltor , int h , int s){
+        if(r == 1){
+            return h;
         }
-        return 2*((n/2) + 1 - lastRemaining(n / 2));
+        if(ltor || r % 2 == 1){
+            h = h + s;
+        }
+        return solve(r / 2, !ltor , h , s * 2);
     }
 }
