@@ -3,13 +3,17 @@ public class Solution {
         HashSet<char> set = new HashSet<char>();
         int left = 0;
         int maxl = 0;
-        for(int i = 0 ; i < s.Length ; i++){
-            while(set.Contains(s[i])){
+        int right = 0;
+        while(right < s.Length){
+            if(!set.Contains(s[right])){
+                set.Add(s[right]);
+                maxl = Math.Max(maxl , right - left + 1);
+                right++;
+            }
+            else{
                 set.Remove(s[left]);
                 left++;
             }
-            set.Add(s[i]);
-            maxl = Math.Max(maxl , i - left + 1); 
         }
         return maxl;
     }
